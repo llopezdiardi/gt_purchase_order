@@ -1,1 +1,3 @@
-ID,OrderType,Description
+OrderType,Description
+NB,Standard
+ZSER,Service

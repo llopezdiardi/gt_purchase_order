@@ -1,6 +1,6 @@
 using {com.globaltalent.purchaseorder as entities } from '../db/schema';
 
-service PurchaseOrder {
+service PurchaseOrderService {
 
     entity PurchaseOrderHeader as projection on entities.PurchaseOrderHeader;
 
