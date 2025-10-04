@@ -1,5 +1,10 @@
 using {PurchaseOrderService as pos} from '../service';
 
+using from './annotations-purchaseorderitems.cds';
+
+annotate pos.PurchaseOrderHeader with @odata.draft.enabled;
+
+
 annotate pos.PurchaseOrderHeader with {
     PurchaseOrder          @title: 'Purchase Order';
     PurchaseOrderType      @title: 'Purchase Order Type';
@@ -88,6 +93,12 @@ annotate pos.PurchaseOrderHeader with @(
             Target: @UI.FieldGroup#ValueData,
             Label: 'Value Data',
             ID: 'ValueData'
+        },
+        {
+            $Type: 'UI.ReferenceFacet',
+            Target: 'to_PurchaseOrderItem/@UI.LineItem',
+            Label: 'Item',
+            ID: 'Item'
         }
     ],
 
@@ -112,6 +123,11 @@ annotate pos.PurchaseOrderHeader with @(
         },
         {
             $Type: 'UI.DataField',
+            Value: OverallStatus.code,
+            Label: 'Status',
+        },
+        {
+            $Type: 'UI.DataField',
             Value: PurchaseOrderType_OrderType,
             Label: 'Order Type',
         },
@@ -122,7 +138,7 @@ annotate pos.PurchaseOrderHeader with @(
         },
         {
             $Type: 'UI.DataField',
-            Value: Supplier,
+            Value: Supplier_ID,
             Label: 'Supplier',
         },
         {
@@ -134,19 +150,3 @@ annotate pos.PurchaseOrderHeader with @(
 );
 
 
-annotate pos.PurchaseOrderItem with {
-    PurchaseOrderItem @title: 'Item';
-    Material          @title: 'Material';
-};
-
-annotate pos.PurchaseOrderItem with @(
-
-    UI.SelectionFields: [Material],
-
-    UI.LineItem       : [{
-        $Type: 'UI.DataField',
-        Value: Material,
-        Label: 'Material'
-    }, ]
-
-);

@@ -10,15 +10,15 @@ using {
 } from '@sap/cds/common';
 
 entity PurchaseOrderHeader : cuid, managed {    
-    key PurchaseOrder          : String(10);
+    key PurchaseOrder          : String(10) @Core.Computed: true;
         CompanyCode            : String(4);
         PurchaseOrderType      : Association to OrderTypes; //OrderTypes_ID & OrderTypes_OrderType
         PurchasingOrganization : String(4);
         PurchaseGroup          : String(3);
-        Supplier               : String(10);
-        Language               : Association to Languages;
+        Supplier               : Association to Suppliers;
+        Language               : Association to Languages default 'ES';
         OrderDate              : Date;
-        DocumentCurrency       : Association to Currencies; //
+        DocumentCurrency       : Association to Currencies default 'COP'; //
         OverallStatus: Association to OverallStatus; //OverallStatus_Code
         to_PurchaseOrderItem   : Composition of many PurchaseOrderItem
                                      on to_PurchaseOrderItem.PurchaseOrder = $self;
@@ -45,10 +45,9 @@ entity OrderTypes {
         Description : String(40);
 }
 
-entity Suppliers {
-    key ID : UUID;
-    key Supplier : String(10);
-        Description : String(40);
+entity Suppliers : cuid{
+    Supplier : String(10);
+    SupplierName : String(80);
 }
 
 entity OverallStatus : CodeList {
@@ -56,5 +55,9 @@ entity OverallStatus : CodeList {
         P = 'Pendiente';
         E = 'Enviado';
         R = 'Rechazado';
-    } 
+    };
+    criticality: Integer; 
+
 }
+
+
